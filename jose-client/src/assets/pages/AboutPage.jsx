@@ -1,9 +1,4 @@
 import Button from '../components/button';
-import winter3 from '../styles/pictures/winter3.jpg';
-import jackson2 from '../styles/pictures/jackson2.jpg';
-import boy2 from '../styles/pictures/boy2.jpg';
-import winter1 from '../styles/pictures/winter1.jpg';
-import jacksonwinter1 from '../styles/pictures/jacksonwinter1.jpg';
 
 const AboutPage = () => {
   return (
@@ -13,7 +8,7 @@ const AboutPage = () => {
           <div className="rounded-3xl border-2 border-dashed border-zinc-300 bg-zinc-100 p-6">
             <div className="flex min-h-72 items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
               <img
-                src={winter3}
+                src="/src/assets/styles/pictures/winter3.jpg"
                 alt="Winter"
                 className="h-full w-full object-cover"
                 loading="eager"
@@ -130,7 +125,7 @@ const AboutPage = () => {
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <div className="flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
                 <img
-                  src={jackson2}
+                  src="/src/assets/styles/pictures/jackson2.jpg"
                   alt="Jackson"
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -139,7 +134,7 @@ const AboutPage = () => {
               </div>
               <div className="flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
                 <img
-                  src={boy2}
+                  src="/src/assets/styles/pictures/boy2.jpg"
                   alt="Boy"
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -148,7 +143,7 @@ const AboutPage = () => {
               </div>
               <div className="flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
                 <img
-                  src={winter1}
+                  src="/src/assets/styles/pictures/winter1.jpg"
                   alt="Winter"
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -157,7 +152,7 @@ const AboutPage = () => {
               </div>
               <div className="flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
                 <img
-                  src={jacksonwinter1}
+                  src="/src/assets/styles/pictures/jacksonwinter1.jpg"
                   alt="Jackson and Winter"
                   className="h-full w-full object-cover"
                   loading="lazy"

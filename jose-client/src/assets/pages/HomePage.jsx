@@ -1,8 +1,4 @@
 import Button from '../components/button';
-import winterPhoto from '../styles/pictures/winter4.jpg';
-import jackson1 from '../styles/pictures/jackson1.jpg';
-import winter2 from '../styles/pictures/winter2.jpg';
-import boy1 from '../styles/pictures/boy1.jpg';
 
 const HomePage = () => {
   return (
@@ -29,7 +25,7 @@ const HomePage = () => {
           <div className="rounded-3xl border-2 border-dashed border-zinc-300 bg-zinc-100 p-6">
             <div className="flex min-h-65 items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
               <img
-                src={winterPhoto}
+                src="/src/assets/styles/pictures/winter4.jpg"
                 alt="Winter"
                 className="h-full w-full object-cover"
                 loading="eager"
@@ -95,7 +91,7 @@ const HomePage = () => {
           <article className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
               <img
-                src={jackson1}
+                src="/src/assets/styles/pictures/jackson1.jpg"
                 alt="Jackson"
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -116,7 +112,7 @@ const HomePage = () => {
           <article className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
               <img
-                src={winter2}
+                src="/src/assets/styles/pictures/winter2.jpg"
                 alt="Winter"
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -137,7 +133,7 @@ const HomePage = () => {
           <article className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
               <img
-                src={boy1}
+                src="/src/assets/styles/pictures/boy1.jpg"
                 alt="Boy"
                 className="h-full w-full object-cover"
                 loading="lazy"

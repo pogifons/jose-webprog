@@ -1,8 +1,4 @@
 import Button from '../components/button';
-import dogeats from '../styles/pictures/dogeats.jpg';
-import groomingcat from '../styles/pictures/groomingcat.jpg';
-import vaccine from '../styles/pictures/vaccine.jpg';
-import playingpets from '../styles/pictures/playingpets.jpg';
 
 const ArticlePage = () => {
   return (
@@ -36,7 +32,7 @@ const ArticlePage = () => {
           <article className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
               <img
-                src={dogeats}
+                src="/src/assets/styles/pictures/dogeats.jpg"
                 alt="Proper feeding guide"
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -58,7 +54,7 @@ const ArticlePage = () => {
           <article className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
               <img
-                src={groomingcat}
+                src="/src/assets/styles/pictures/groomingcat.jpg"
                 alt="Grooming basics"
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -80,7 +76,7 @@ const ArticlePage = () => {
           <article className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
               <img
-                src={vaccine}
+                src="/src/assets/styles/pictures/vaccine.jpg"
                 alt="Vaccination importance"
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -102,7 +98,7 @@ const ArticlePage = () => {
           <article className="rounded-3xl border-2 border-zinc-900 bg-zinc-100 p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-zinc-200">
               <img
-                src={playingpets}
+                src="/src/assets/styles/pictures/playingpets.jpg"
                 alt="Exercise and playtime"
                 className="h-full w-full object-cover"
                 loading="lazy"
