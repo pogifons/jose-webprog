@@ -27,10 +27,10 @@ const AboutPage = () => {
               About Section
             </p>
             <h1 className="max-w-xl text-3xl font-bold leading-tight text-zinc-900 sm:text-4xl">
-              A profile wireframe focused on layout, spacing, and content grouping.
+            The Importance of Pets in Our Lives
             </h1>
             <p className="mt-4 max-w-lg text-sm leading-7 text-zinc-600 sm:text-base">
-              This page follows the same low-fidelity system as the homepage with a simple hero, overview blocks, and supporting sections for profile details.
+            Pets provide emotional support, reduce stress, and improve overall well-being. They teach us compassion, responsibility, and the value of caring for another life.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button to="/" variant="primary">
