@@ -1,11 +1,11 @@
 import './App.css';
-import Layout from './assets/components/Layout';
-import AboutPage from './assets/pages/AboutPage';
-import ArticleListPage from './assets/pages/ArticleListPage';
-import ArticlePage from './assets/pages/ArticlePage';
-import HomePage from './assets/pages/HomePage';
+import Layout from './components/Layout';
+import AboutPage from './pages/AboutPage';
+import ArticleListPage from './pages/ArticleListPage';
+import ArticlePage from './pages/ArticlePage';
+import HomePage from './pages/HomePage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import NotFoundPage from './assets/pages/NotFoundPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const routes = [{
   path: '/',
@@ -28,6 +28,10 @@ const routes = [{
   {
     path: '/articles/:name', // -->articles/learn-react
     element: <ArticlePage />
+  },
+  {
+    path: '*',
+    element: <NotFoundPage />
   }
 ]
 }]

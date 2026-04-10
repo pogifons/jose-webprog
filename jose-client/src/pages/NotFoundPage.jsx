@@ -3,7 +3,7 @@ import Button from '../components/button';
 
 function NotFoundPage() {
   const error = useRouteError();
-  const imageSrc = new URL('../styles/pictures/pagenotfound.png', import.meta.url).href;
+  const imageSrc = new URL('../assets/styles/pictures/pagenotfound.png', import.meta.url).href;
 
   return (
     <div className="min-h-[70vh] w-full px-4 py-10 sm:px-6 lg:px-8">
