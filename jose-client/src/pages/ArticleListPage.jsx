@@ -5,14 +5,14 @@ import articles from '../assets/styles/article-content.js';
 const ArticleListPage = () => {
   return (
     <div className="flex w-full flex-col gap-6">
-      <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-        <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
+      <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
+        <p className="pet-kicker mb-3">
           Articles
         </p>
-        <h1 className="max-w-xl text-3xl font-bold leading-tight text-zinc-900 sm:text-4xl">
+        <h1 className="pet-title max-w-xl">
         Caring for Pets Starts with Love
         </h1>
-        <p className="mt-4 max-w-lg text-sm leading-7 text-zinc-600 sm:text-base">
+        <p className="pet-subtitle mt-4 max-w-lg">
         Read helpful tips and insights that will help you give your pets the love, care, and attention they truly deserve.
         </p>
         <div className="mt-6">
@@ -20,12 +20,12 @@ const ArticleListPage = () => {
         </div>
       </section>
 
-      <section className="border-y-2 border-zinc-900 bg-zinc-50 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+      <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
         <div className="mb-6">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-zinc-500">
+          <p className="pet-kicker">
             Featured Articles
           </p>
-          <h2 className="mt-2 text-2xl font-semibold text-zinc-900">
+          <h2 className="mt-2 text-2xl font-semibold text-[color:var(--pet-ink)]">
             Article card grid
           </h2>
         </div>

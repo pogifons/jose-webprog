@@ -3,7 +3,7 @@ const pictureUrl = (fileName) =>
 
 const articles = [
     {
-      name: "react-props-and-styling", // String
+      name: "Feeding Guide", // String
       title: "Proper Feeding Guide for Pets", //String
       imageSrc: pictureUrl("dogeats.jpg"),
       // List --> String
@@ -14,7 +14,7 @@ const articles = [
       ]
     },
     {
-      name: "react-functional-components",
+      name: "Basic Grooming",
       title: "Basic Grooming Tips for a Healthy Pet",
       imageSrc: pictureUrl("groomingcat.jpg"),
       content: [
@@ -24,7 +24,7 @@ const articles = [
       ]
     },
     {
-      name: "react-component-lifecycle",
+      name: "Vaccination",
       title: "Why Vaccination is Important for Pets",
       imageSrc: pictureUrl("vaccine.jpg"),
       content: [
@@ -34,7 +34,7 @@ const articles = [
       ]
     },
     {
-      name: "react-routing-basics",
+      name: "Exercise and Playtime",
       title: "Daily Exercise and Playtime Guide",
       imageSrc: pictureUrl("playingpets.jpg"),
       content: [
@@ -44,7 +44,7 @@ const articles = [
       ]
     },
     {
-      name: "react-state-management",
+      name: "Comfortable Space",
       title: "Creating a Comfortable Space for Your Pet",
       imageSrc: pictureUrl("Dogandcatsleeping.webp"),
       content: [
