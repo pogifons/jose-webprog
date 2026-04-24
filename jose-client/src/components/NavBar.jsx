@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import logo from '../assets/styles/pictures/petpals.png';
+import Button from './Button';
 
 const links = [
   { label: 'Home', to: '/' },
@@ -35,6 +36,9 @@ const NavBar = () => {
               {link.label}
             </NavLink>
           ))}
+          <Button to="/auth/signin" variant="secondary" className="ml-2">
+            Sign in
+          </Button>
         </nav>
 
         <details className="relative md:hidden">
@@ -56,6 +60,12 @@ const NavBar = () => {
                   {link.label}
                 </NavLink>
               ))}
+              <NavLink to="/auth/signin" className={navLinkClassName}>
+                Sign in
+              </NavLink>
+              <NavLink to="/auth/signup" className={navLinkClassName}>
+                Sign up
+              </NavLink>
             </nav>
           </div>
         </details>

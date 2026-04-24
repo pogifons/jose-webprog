@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import Button from './button';
+import Button from './Button';
 
 const ArticleList = ({ articles }) => {
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {articles.map((article, index) => (
-        <article key={article.name} className="pet-card p-4">
+        <article key={article.name} className="pet-card flex h-full flex-col p-4">
           <div className="relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
             {article.imageSrc ? (
               <img
@@ -27,7 +27,7 @@ const ArticleList = ({ articles }) => {
           <p className="mt-3 text-sm leading-6 text-[color:rgba(27,26,22,0.72)]">
             {article.content[0].substring(0, 150)}...
           </p>
-          <Link to={`/articles/${article.name}`}>
+          <Link to={`/articles/${article.name}`} className="mt-auto">
             <Button className="mt-4">Read More</Button>
           </Link>
         </article>

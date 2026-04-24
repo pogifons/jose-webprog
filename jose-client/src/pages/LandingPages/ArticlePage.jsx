@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
-import Button from '../components/button';
-import articles from '../assets/styles/article-content.js';
+import Button from '../../components/Button';
+import articles from '../../assets/article-content.js';
 
 function ArticlePage() {
   const { name } = useParams();
-  const article = articles.find(article => article.name === name);
+  const article = articles.find((articleItem) => articleItem.name === name);
 
   if (!article) {
     return (
@@ -12,7 +12,9 @@ function ArticlePage() {
         <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
           <div className="mx-auto max-w-3xl">
             <h1 className="text-3xl font-bold text-[color:var(--pet-ink)]">Article not found</h1>
-            <Button to="/articles" className="mt-6">Back to Articles</Button>
+            <Button to="/articles" className="mt-6">
+              Back to Articles
+            </Button>
           </div>
         </section>
       </div>
@@ -26,14 +28,15 @@ function ArticlePage() {
           <div className="mb-4">
             <Button to="/articles">← Back to Articles</Button>
           </div>
-          <p className="pet-kicker mb-3">
-            Article
-          </p>
+          <p className="pet-kicker mb-3">Article</p>
           <h1 className="text-3xl font-bold leading-tight text-[color:var(--pet-ink)] sm:text-4xl">
             {article.title}
           </h1>
           <p className="mt-2 text-sm text-[color:rgba(27,26,22,0.62)]">
-            {article.name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+            {article.name
+              .split('-')
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ')}
           </p>
         </div>
       </section>
@@ -52,13 +55,16 @@ function ArticlePage() {
                 loading="lazy"
               />
             ) : (
-              <div className="h-24 w-24 border-2 bg-[color:rgba(27,26,22,0.04)]" style={{ borderColor: 'rgba(27,26,22,0.18)' }} />
+              <div
+                className="h-24 w-24 border-2 bg-[color:rgba(27,26,22,0.04)]"
+                style={{ borderColor: 'rgba(27,26,22,0.18)' }}
+              />
             )}
           </div>
 
           <div className="prose prose-sm max-w-none space-y-4 text-[color:rgba(27,26,22,0.82)]">
             {article.content.map((paragraph, index) => (
-              <p key={index} className="text-base leading-7 whitespace-pre-wrap">
+              <p key={index} className="whitespace-pre-wrap text-base leading-7">
                 {paragraph}
               </p>
             ))}

@@ -1,4 +1,4 @@
-import Button from '../components/button';
+import Button from '../../components/Button';
 
 const HomePage = () => {
   return (
@@ -6,14 +6,10 @@ const HomePage = () => {
       <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
         <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
           <div>
-            <p className="pet-kicker mb-3">
-              Hero Section
-            </p>
-            <h1 className="pet-title max-w-xl">
-                Meet My Beloved Pets
-            </h1>
+            <p className="pet-kicker mb-3">Hero Section</p>
+            <h1 className="pet-title max-w-xl">Meet My Beloved Pets</h1>
             <p className="pet-subtitle mt-4 max-w-lg">
-            “A place where I share my pets’ daily life, adventures, and cutest moments.”
+              “A place where I share my pets’ daily life, adventures, and cutest moments.”
             </p>
             <div className="mt-6">
               <Button to="/about" variant="primary">
@@ -38,9 +34,7 @@ const HomePage = () => {
 
       <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
         <div className="mb-6">
-          <p className="pet-kicker">
-            KPI Section
-          </p>
+          <p className="pet-kicker">KPI Section</p>
           <h2 className="mt-2 text-2xl font-semibold text-[color:var(--pet-ink)]">
             Quick overview blocks
           </h2>
@@ -79,12 +73,8 @@ const HomePage = () => {
 
       <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
         <div className="mb-6">
-          <p className="pet-kicker">
-            Feature Cards
-          </p>
-          <h2 className="mt-2 text-2xl font-semibold text-[color:var(--pet-ink)]">
-            MEET!
-          </h2>
+          <p className="pet-kicker">Feature Cards</p>
+          <h2 className="mt-2 text-2xl font-semibold text-[color:var(--pet-ink)]">MEET!</h2>
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
@@ -98,12 +88,8 @@ const HomePage = () => {
                 decoding="async"
               />
             </div>
-            <h3 className="mt-4 text-lg font-semibold text-[color:var(--pet-ink)]">
-              Feature Card One
-            </h3>
-            <p className="mt-3 text-sm leading-6 text-[color:rgba(27,26,22,0.72)]">
-              JACKSON.
-            </p>
+            <h3 className="mt-4 text-lg font-semibold text-[color:var(--pet-ink)]">Feature Card One</h3>
+            <p className="mt-3 text-sm leading-6 text-[color:rgba(27,26,22,0.72)]">JACKSON.</p>
             <Button className="mt-4" variant="primary">
               View More
             </Button>
@@ -119,12 +105,8 @@ const HomePage = () => {
                 decoding="async"
               />
             </div>
-            <h3 className="mt-4 text-lg font-semibold text-[color:var(--pet-ink)]">
-              Feature Card Two
-            </h3>
-            <p className="mt-3 text-sm leading-6 text-[color:rgba(27,26,22,0.72)]">
-              WINTER.
-            </p>
+            <h3 className="mt-4 text-lg font-semibold text-[color:var(--pet-ink)]">Feature Card Two</h3>
+            <p className="mt-3 text-sm leading-6 text-[color:rgba(27,26,22,0.72)]">WINTER.</p>
             <Button className="mt-4" variant="primary">
               View More
             </Button>
@@ -140,12 +122,8 @@ const HomePage = () => {
                 decoding="async"
               />
             </div>
-            <h3 className="mt-4 text-lg font-semibold text-[color:var(--pet-ink)]">
-              Feature Card Three
-            </h3>
-            <p className="mt-3 text-sm leading-6 text-[color:rgba(27,26,22,0.72)]">
-              BOY.
-            </p>
+            <h3 className="mt-4 text-lg font-semibold text-[color:var(--pet-ink)]">Feature Card Three</h3>
+            <p className="mt-3 text-sm leading-6 text-[color:rgba(27,26,22,0.72)]">BOY.</p>
             <Button className="mt-4" variant="primary">
               View More
             </Button>

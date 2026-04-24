@@ -56,12 +56,42 @@ body {
     z-index: 0;
   }
 
-  /* Optional: enable a *very* subtle paw texture */
+  /* Side-only paw texture (subtle + cleaner) */
+  .pet-bg > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .pet-bg--paws::before,
+  .pet-bg--paws::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: clamp(120px, 10vw, 200px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.055;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='%231b1a16' fill-opacity='0.9'%3E%3Cellipse cx='72' cy='76' rx='16' ry='20'/%3E%3Cellipse cx='108' cy='62' rx='15' ry='19'/%3E%3Cellipse cx='144' cy='78' rx='16' ry='20'/%3E%3Cellipse cx='54' cy='112' rx='15' ry='19'/%3E%3Cpath d='M110 118c-28 0-52 22-52 48 0 16 12 26 30 26 14 0 24-6 33-16 9 10 19 16 33 16 18 0 30-10 30-26 0-26-24-48-52-48z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    background-repeat: repeat;
+    filter: blur(0.25px);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+  }
+
   .pet-bg--paws::before {
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='none' stroke='%231b1a16' stroke-width='2' opacity='0.85'%3E%3Cpath d='M40 88c10 0 18 9 18 20 0 6-4 10-10 10-10 0-18-8-18-18 0-7 4-12 10-12z'/%3E%3Cpath d='M33 62c5 0 9 5 9 11 0 4-2 7-6 7-5 0-9-4-9-9 0-5 2-9 6-9z'/%3E%3Cpath d='M52 58c5 0 9 5 9 11 0 4-2 7-6 7-5 0-9-4-9-9 0-5 2-9 6-9z'/%3E%3Cpath d='M66 68c5 0 9 5 9 11 0 4-2 7-6 7-5 0-9-4-9-9 0-5 2-9 6-9z'/%3E%3Cpath d='M22 70c5 0 9 5 9 11 0 4-2 7-6 7-5 0-9-4-9-9 0-5 2-9 6-9z'/%3E%3C/g%3E%3C/svg%3E");
-    background-size: 260px 260px;
-    background-position: 32px 22px;
+    left: 0;
+    background-position: 18px 34px;
+    mask-image: radial-gradient(120% 90% at 0% 50%, black 0%, black 55%, transparent 78%);
+    -webkit-mask-image: radial-gradient(120% 90% at 0% 50%, black 0%, black 55%, transparent 78%);
+  }
+
+  .pet-bg--paws::after {
+    right: 0;
+    background-position: 42px 18px;
+    mask-image: radial-gradient(120% 90% at 100% 50%, black 0%, black 55%, transparent 78%);
+    -webkit-mask-image: radial-gradient(120% 90% at 100% 50%, black 0%, black 55%, transparent 78%);
   }
 
   .pet-container {

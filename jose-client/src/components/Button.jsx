@@ -5,19 +5,8 @@ const variantClasses = {
   secondary: 'pet-button pet-button-secondary',
 };
 
-const Button = ({
-  children,
-  to,
-  type = 'button',
-  variant = 'secondary',
-  className = '',
-}) => {
-  const classes = [
-    variantClasses[variant] ?? variantClasses.secondary,
-    className,
-  ]
-    .join(' ')
-    .trim();
+const Button = ({ children, to, type = 'button', variant = 'secondary', className = '' }) => {
+  const classes = [variantClasses[variant] ?? variantClasses.secondary, className].join(' ').trim();
 
   if (to) {
     return (
