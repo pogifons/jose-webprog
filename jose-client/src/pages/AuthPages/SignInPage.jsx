@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 
 const inputClasses =
@@ -7,6 +7,13 @@ const inputClasses =
 const actionButtonClassName = 'w-full justify-center rounded-2xl py-3 text-[11px] tracking-[0.24em]';
 
 const SignInPage = () => {
+  const navigate = useNavigate();
+
+  const handleSignIn = (event) => {
+    event.preventDefault();
+    navigate('/dashboard');
+  };
+
   return (
     <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
       <div className="pet-card p-5 sm:p-6">
@@ -18,7 +25,7 @@ const SignInPage = () => {
           Continue reading and saving your favorite pet tips.
         </p>
 
-        <form className="mt-8 space-y-5">
+        <form className="mt-8 space-y-5" onSubmit={handleSignIn}>
           <div>
             <label htmlFor="signin-email" className="text-sm font-semibold text-[color:var(--pet-ink)]">
               Email address
