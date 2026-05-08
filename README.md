@@ -1,50 +1,16 @@
-# jose-webprog
+# React + Vite
 
-Sample design pattern: component-based project structure.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-```text
-jose-webprog/
-├── README.md
-├── project.drawio
-└── jose-client/
-    ├── eslint.config.js
-    ├── index.html
-    ├── package-lock.json
-    ├── package.json
-    ├── vite.config.js
-    ├── public/
-    │   └── vite.svg
-    └── src/
-        ├── App.jsx
-        ├── main.jsx
-        ├── assets/
-        │   ├── article-content.js
-        │   ├── hero.png
-        │   ├── react.svg
-        │   ├── vite.svg
-        │   └── styles/
-        │       └── index.css
-        ├── components/
-        │   ├── ArticleList.jsx
-        │   ├── Button.jsx
-        │   ├── Footer.jsx
-        │   └── NavBar.jsx
-        ├── layouts/
-        │   ├── AuthLayout.jsx
-        │   ├── DashLayout.jsx
-        │   └── Layout.jsx
-        └── pages/
-            ├── NotFoundPage.jsx
-            ├── AuthPages/
-            │   ├── SignInPage.jsx
-            │   └── SignUpPage.jsx
-            ├── DashboardPages/
-            │   ├── DashboardPage.jsx
-            │   ├── ReportsPage.jsx
-            │   └── UsersPage.jsx
-            └── LandingPages/
-                ├── AboutPage.jsx
-                ├── ArticleListPage.jsx
-                ├── ArticlePage.jsx
-                └── HomePage.jsx
-```
+Currently, two official plugins are available:
+
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+
+## React Compiler
+
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
