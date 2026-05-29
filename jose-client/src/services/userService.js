@@ -150,11 +150,22 @@ export const authenticateUser = async ({ email, password }) => {
 
 export const getCurrentUser = () => {
   try {
-    return JSON.parse(localStorage.getItem(CURRENT_USER_STORAGE_KEY) || 'null');
+    const storedUser = JSON.parse(localStorage.getItem(CURRENT_USER_STORAGE_KEY) || 'null');
+
+    if (!storedUser) {
+      return null;
+    }
+
+    const normalizedUser = normalizeUser(storedUser);
+    localStorage.setItem(CURRENT_USER_STORAGE_KEY, JSON.stringify(normalizedUser));
+
+    return normalizedUser;
   } catch {
     return null;
   }
 };
+
+export const getCurrentUserRole = () => getCurrentUser()?.role;
 
 export const clearCurrentUser = () => {
   localStorage.removeItem(CURRENT_USER_STORAGE_KEY);

@@ -25,7 +25,7 @@ import AssessmentIcon from "@mui/icons-material/Assessment";
 import ArticleIcon from "@mui/icons-material/Article";
 import Button from "@mui/material/Button";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
-import { clearCurrentUser, getCurrentUser } from "../services/userService";
+import { clearCurrentUser, getCurrentUserRole } from "../services/userService";
 
 const drawerWidth = 240;
 const petInk = "#1b1a16";
@@ -188,9 +188,9 @@ const DashLayout = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
-  const currentUser = getCurrentUser();
+  const currentUserRole = getCurrentUserRole();
   const navItems = dashboardNavItems.filter(
-    (item) => !item.roles || item.roles.includes(currentUser?.role)
+    (item) => !item.roles || item.roles.includes(currentUserRole)
   );
   const normalizedPathname = location.pathname.endsWith("/") && location.pathname !== "/"
     ? location.pathname.slice(0, -1)
