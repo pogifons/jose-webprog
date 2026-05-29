@@ -1,4 +1,9 @@
 import Button from '../../components/Button';
+import boy2 from '../../assets/styles/pictures/boy2.jpg';
+import jackson2 from '../../assets/styles/pictures/jackson2.jpg';
+import jacksonWinter1 from '../../assets/styles/pictures/jacksonwinter1.jpg';
+import winter1 from '../../assets/styles/pictures/winter1.jpg';
+import winter3 from '../../assets/styles/pictures/winter3.jpg';
 
 const AboutPage = () => {
   return (
@@ -8,7 +13,7 @@ const AboutPage = () => {
           <div className="pet-card-soft border-dashed p-6">
             <div className="flex min-h-72 items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
               <img
-                src="/src/assets/styles/pictures/winter3.jpg"
+                src={winter3}
                 alt="Winter"
                 className="h-full w-full object-cover"
                 loading="eager"
@@ -112,7 +117,7 @@ const AboutPage = () => {
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <div className="flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
                 <img
-                  src="/src/assets/styles/pictures/jackson2.jpg"
+                  src={jackson2}
                   alt="Jackson"
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -121,7 +126,7 @@ const AboutPage = () => {
               </div>
               <div className="flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
                 <img
-                  src="/src/assets/styles/pictures/boy2.jpg"
+                  src={boy2}
                   alt="Boy"
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -130,7 +135,7 @@ const AboutPage = () => {
               </div>
               <div className="flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
                 <img
-                  src="/src/assets/styles/pictures/winter1.jpg"
+                  src={winter1}
                   alt="Winter"
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -139,7 +144,7 @@ const AboutPage = () => {
               </div>
               <div className="flex aspect-square items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
                 <img
-                  src="/src/assets/styles/pictures/jacksonwinter1.jpg"
+                  src={jacksonWinter1}
                   alt="Jackson and Winter"
                   className="h-full w-full object-cover"
                   loading="lazy"

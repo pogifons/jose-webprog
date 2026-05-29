@@ -1,4 +1,8 @@
 import Button from '../../components/Button';
+import boy1 from '../../assets/styles/pictures/boy1.jpg';
+import jackson1 from '../../assets/styles/pictures/jackson1.jpg';
+import winter2 from '../../assets/styles/pictures/winter2.jpg';
+import winter4 from '../../assets/styles/pictures/winter4.jpg';
 
 const HomePage = () => {
   return (
@@ -21,7 +25,7 @@ const HomePage = () => {
           <div className="pet-card-soft border-dashed p-6">
             <div className="flex min-h-65 items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
               <img
-                src="/src/assets/styles/pictures/winter4.jpg"
+                src={winter4}
                 alt="Winter"
                 className="h-full w-full object-cover"
                 loading="eager"
@@ -81,7 +85,7 @@ const HomePage = () => {
           <article className="pet-card p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
               <img
-                src="/src/assets/styles/pictures/jackson1.jpg"
+                src={jackson1}
                 alt="Jackson"
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -98,7 +102,7 @@ const HomePage = () => {
           <article className="pet-card p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
               <img
-                src="/src/assets/styles/pictures/winter2.jpg"
+                src={winter2}
                 alt="Winter"
                 className="h-full w-full object-cover"
                 loading="lazy"
@@ -115,7 +119,7 @@ const HomePage = () => {
           <article className="pet-card p-4">
             <div className="flex aspect-4/3 items-center justify-center overflow-hidden rounded-[1.25rem] bg-[color:rgba(27,26,22,0.06)]">
               <img
-                src="/src/assets/styles/pictures/boy1.jpg"
+                src={boy1}
                 alt="Boy"
                 className="h-full w-full object-cover"
                 loading="lazy"
