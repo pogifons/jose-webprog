@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
+import { authenticateUser } from '../../services/userService';
 
 const inputClasses =
   'mt-2 w-full rounded-2xl border-2 border-[color:rgba(27,26,22,0.14)] bg-[color:rgba(255,250,242,0.85)] px-4 py-3 text-sm text-[color:var(--pet-ink)] outline-none transition placeholder:text-[color:rgba(27,26,22,0.45)] focus:border-[color:var(--pet-ink)]';
@@ -8,10 +10,28 @@ const actionButtonClassName = 'w-full justify-center rounded-2xl py-3 text-[11px
 
 const SignInPage = () => {
   const navigate = useNavigate();
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSignIn = (event) => {
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setForm((currentForm) => ({ ...currentForm, [name]: value }));
+    setError('');
+  };
+
+  const handleSignIn = async (event) => {
     event.preventDefault();
-    navigate('/dashboard');
+    setIsSubmitting(true);
+
+    try {
+      await authenticateUser(form);
+      navigate('/dashboard');
+    } catch (authError) {
+      setError(authError.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -26,16 +46,26 @@ const SignInPage = () => {
         </p>
 
         <form className="mt-8 space-y-5" onSubmit={handleSignIn}>
+          {error ? (
+            <div className="rounded-2xl border-2 border-[color:rgba(220,38,38,0.35)] bg-[color:rgba(254,226,226,0.7)] px-4 py-3 text-sm font-semibold text-red-700">
+              {error}
+            </div>
+          ) : null}
+
           <div>
             <label htmlFor="signin-email" className="text-sm font-semibold text-[color:var(--pet-ink)]">
               Email address
             </label>
             <input
               id="signin-email"
+              name="email"
               type="email"
               placeholder="you@example.com"
               autoComplete="email"
+              value={form.email}
+              onChange={handleChange}
               className={inputClasses}
+              required
             />
           </div>
 
@@ -45,10 +75,14 @@ const SignInPage = () => {
             </label>
             <input
               id="signin-password"
+              name="password"
               type="password"
-              placeholder="••••••••"
+              placeholder="Password"
               autoComplete="current-password"
+              value={form.password}
+              onChange={handleChange}
               className={inputClasses}
+              required
             />
           </div>
 
@@ -69,17 +103,8 @@ const SignInPage = () => {
           </div>
 
           <Button type="submit" variant="primary" className={actionButtonClassName}>
-            Sign in
+            {isSubmitting ? 'Signing in...' : 'Sign in'}
           </Button>
-
-          <div className="grid gap-3 pt-2 sm:grid-cols-2">
-            <Button type="button" variant="secondary" className={actionButtonClassName}>
-              Continue with Google
-            </Button>
-            <Button type="button" variant="secondary" className={actionButtonClassName}>
-              Continue with Apple
-            </Button>
-          </div>
         </form>
 
         <div

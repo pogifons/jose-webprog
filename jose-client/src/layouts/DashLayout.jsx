@@ -22,8 +22,10 @@ import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PeopleIcon from "@mui/icons-material/People";
 import AssessmentIcon from "@mui/icons-material/Assessment";
+import ArticleIcon from "@mui/icons-material/Article";
 import Button from "@mui/material/Button";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { clearCurrentUser, getCurrentUser } from "../services/userService";
 
 const drawerWidth = 240;
 const petInk = "#1b1a16";
@@ -46,10 +48,17 @@ const dashboardNavItems = [
     icon: AssessmentIcon,
   },
   {
+    label: "Articles",
+    title: "Articles",
+    to: "/dashboard/articles",
+    icon: ArticleIcon,
+  },
+  {
     label: "Users",
     title: "Users",
     to: "/dashboard/users",
     icon: PeopleIcon,
+    roles: ["admin"],
   },
 ];
 
@@ -179,6 +188,10 @@ const DashLayout = () => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const location = useLocation();
+  const currentUser = getCurrentUser();
+  const navItems = dashboardNavItems.filter(
+    (item) => !item.roles || item.roles.includes(currentUser?.role)
+  );
   const normalizedPathname = location.pathname.endsWith("/") && location.pathname !== "/"
     ? location.pathname.slice(0, -1)
     : location.pathname;
@@ -194,6 +207,7 @@ const DashLayout = () => {
   };
 
   const handleLogout = () => {
+    clearCurrentUser();
     navigate("/");
   };
 
@@ -259,7 +273,7 @@ const DashLayout = () => {
           <Divider />
           {/* Drawer List */}
           <List>
-            {dashboardNavItems.map(({ label, to, icon: Icon }) => (
+            {navItems.map(({ label, to, icon: Icon }) => (
               <ListItem key={to} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   component={Link}

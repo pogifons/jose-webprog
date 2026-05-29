@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
+import { registerUser } from '../../services/userService';
 
 const inputClasses =
   'mt-2 w-full rounded-2xl border-2 border-[color:rgba(27,26,22,0.14)] bg-[color:rgba(255,250,242,0.85)] px-4 py-3 text-sm text-[color:var(--pet-ink)] outline-none transition placeholder:text-[color:rgba(27,26,22,0.45)] focus:border-[color:var(--pet-ink)]';
@@ -75,9 +76,12 @@ const validateForm = (form) => {
 };
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event) => {
     const { name, type, checked, value } = event.target;
@@ -87,18 +91,37 @@ const SignUpPage = () => {
     };
 
     setForm(nextForm);
+    setSuccessMessage('');
 
     if (submitted) {
       setErrors(validateForm(nextForm));
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const nextErrors = validateForm(form);
     setSubmitted(true);
     setErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await registerUser(form);
+      setSuccessMessage('Account created. Please sign in.');
+      setForm(initialForm);
+      setSubmitted(false);
+      setTimeout(() => navigate('/auth/signin'), 700);
+    } catch (error) {
+      setErrors({ form: error.message });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const fieldClassName = (fieldName) => (errors[fieldName] ? errorInputClasses : inputClasses);
@@ -114,13 +137,19 @@ const SignUpPage = () => {
           Get quick access to articles, collections, and future updates.
         </p>
 
-        {submitted && Object.keys(errors).length === 0 ? (
+        {successMessage ? (
           <div className="mt-6 rounded-2xl border-2 border-[color:rgba(22,101,52,0.45)] bg-[color:rgba(220,252,231,0.68)] px-4 py-3 text-sm font-semibold text-[color:#166534]">
-            Account form is valid and ready to submit.
+            {successMessage}
           </div>
         ) : null}
 
         <form className="mt-8 space-y-5" onSubmit={handleSubmit} noValidate>
+          {errors.form ? (
+            <div className="rounded-2xl border-2 border-[color:rgba(220,38,38,0.35)] bg-[color:rgba(254,226,226,0.7)] px-4 py-3 text-sm font-semibold text-red-700">
+              {errors.form}
+            </div>
+          ) : null}
+
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
               <label htmlFor="first-name" className="text-sm font-semibold text-[color:var(--pet-ink)]">
@@ -336,7 +365,7 @@ const SignUpPage = () => {
           ) : null}
 
           <Button type="submit" variant="primary" className={actionButtonClassName}>
-            Create account
+            {isSubmitting ? 'Creating...' : 'Create account'}
           </Button>
 
           <div className="grid gap-3 pt-2 sm:grid-cols-2">

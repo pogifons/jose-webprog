@@ -1,8 +1,10 @@
 import Button from '../../components/Button';
 import ArticleList from '../../components/ArticleList';
-import articles from '../../data/article-content.js';
+import { getPublishedArticles } from '../../services/articleStore';
 
 const ArticleListPage = () => {
+  const articles = getPublishedArticles();
+
   return (
     <div className="flex w-full flex-col gap-6">
       <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
