@@ -1,6 +1,8 @@
 import constants from '../constants';
 import articlesSeed from '../data/article-content';
 
+const ARTICLES_STORAGE_KEY = 'petpals.articles.fallback';
+
 const slugify = (value) =>
   String(value || '')
     .trim()
@@ -44,6 +46,26 @@ const mergeWithSeedArticles = (apiArticles) => {
   return [...normalizedApiArticles, ...seedArticles];
 };
 
+const getFallbackArticles = () => {
+  try {
+    const storedArticles = JSON.parse(localStorage.getItem(ARTICLES_STORAGE_KEY) || 'null');
+
+    if (Array.isArray(storedArticles)) {
+      return mergeWithSeedArticles(storedArticles);
+    }
+  } catch {
+    // Ignore broken fallback cache and use the default articles.
+  }
+
+  return getSeedArticles();
+};
+
+const setFallbackArticles = (articles) => {
+  const normalizedArticles = articles.map(normalizeArticle);
+  localStorage.setItem(ARTICLES_STORAGE_KEY, JSON.stringify(normalizedArticles));
+  return normalizedArticles;
+};
+
 const requestJson = async (path, options = {}) => {
   const response = await fetch(`${constants.HOST}/articles${path}`, {
     headers: {
@@ -63,13 +85,21 @@ const requestJson = async (path, options = {}) => {
 };
 
 export const fetchArticles = async () => {
-  const articles = await requestJson('/');
-  return articles.map(normalizeArticle);
+  try {
+    const articles = await requestJson('/');
+    return articles.map(normalizeArticle);
+  } catch {
+    return getFallbackArticles();
+  }
 };
 
 export const fetchPublishedArticles = async () => {
-  const articles = await requestJson('/?published=true');
-  return mergeWithSeedArticles(articles);
+  try {
+    const articles = await requestJson('/?published=true');
+    return mergeWithSeedArticles(articles);
+  } catch {
+    return getFallbackArticles().filter((article) => article.isPublished);
+  }
 };
 
 export const fetchArticleByName = async (name) => {
@@ -143,14 +173,34 @@ export const saveArticle = async ({ articles, form, selectedArticleId }) => {
   };
 
   if (selectedArticleId) {
-    const updatedArticle = await updateArticle(selectedArticleId, payload);
-    return articles.map((article) =>
-      article.id === selectedArticleId ? updatedArticle : article
-    );
+    try {
+      const updatedArticle = await updateArticle(selectedArticleId, payload);
+      return articles.map((article) =>
+        article.id === selectedArticleId ? updatedArticle : article
+      );
+    } catch {
+      return setFallbackArticles(
+        articles.map((article) =>
+          article.id === selectedArticleId
+            ? normalizeArticle({ ...article, ...payload, id: selectedArticleId })
+            : article
+        )
+      );
+    }
   }
 
-  const createdArticle = await createArticle(payload);
-  return [createdArticle, ...articles];
+  try {
+    const createdArticle = await createArticle(payload);
+    return [createdArticle, ...articles];
+  } catch {
+    return setFallbackArticles([
+      normalizeArticle({
+        ...payload,
+        id: `fallback-${Date.now()}`,
+      }),
+      ...articles,
+    ]);
+  }
 };
 
 export const toggleArticlePublished = async (articles, articleId) => {
@@ -160,14 +210,24 @@ export const toggleArticlePublished = async (articles, articleId) => {
     return articles;
   }
 
-  const updatedArticle = await updateArticle(articleId, {
-    ...article,
-    isPublished: !article.isPublished,
-  });
+  try {
+    const updatedArticle = await updateArticle(articleId, {
+      ...article,
+      isPublished: !article.isPublished,
+    });
 
-  return articles.map((currentArticle) =>
-    currentArticle.id === articleId ? updatedArticle : currentArticle
-  );
+    return articles.map((currentArticle) =>
+      currentArticle.id === articleId ? updatedArticle : currentArticle
+    );
+  } catch {
+    return setFallbackArticles(
+      articles.map((currentArticle) =>
+        currentArticle.id === articleId
+          ? { ...currentArticle, isPublished: !currentArticle.isPublished }
+          : currentArticle
+      )
+    );
+  }
 };
 
 export const validateArticleForm = (form) => {
