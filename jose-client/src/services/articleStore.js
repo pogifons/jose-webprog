@@ -1,4 +1,5 @@
 import constants from '../constants';
+import articlesSeed from '../data/article-content';
 
 const slugify = (value) =>
   String(value || '')
@@ -21,6 +22,27 @@ const normalizeArticle = (article, index = 0) => ({
         .filter(Boolean),
   isPublished: typeof article.isPublished === 'boolean' ? article.isPublished : true,
 });
+
+const getSeedArticles = () =>
+  articlesSeed.map((article, index) =>
+    normalizeArticle({
+      ...article,
+      id: `seed-${index + 1}`,
+      isPublished: true,
+    }, index)
+  );
+
+const mergeWithSeedArticles = (apiArticles) => {
+  const normalizedApiArticles = apiArticles.map(normalizeArticle);
+  const apiArticleNames = new Set(
+    normalizedApiArticles.map((article) => article.name.trim().toLowerCase())
+  );
+  const seedArticles = getSeedArticles().filter(
+    (article) => !apiArticleNames.has(article.name.trim().toLowerCase())
+  );
+
+  return [...normalizedApiArticles, ...seedArticles];
+};
 
 const requestJson = async (path, options = {}) => {
   const response = await fetch(`${constants.HOST}/articles${path}`, {
@@ -47,11 +69,24 @@ export const fetchArticles = async () => {
 
 export const fetchPublishedArticles = async () => {
   const articles = await requestJson('/?published=true');
-  return articles.map(normalizeArticle);
+  return mergeWithSeedArticles(articles);
 };
 
-export const fetchArticleByName = async (name) =>
-  normalizeArticle(await requestJson(`/slug/${encodeURIComponent(name)}`));
+export const fetchArticleByName = async (name) => {
+  try {
+    return normalizeArticle(await requestJson(`/slug/${encodeURIComponent(name)}`));
+  } catch (error) {
+    const seedArticle = getSeedArticles().find(
+      (article) => article.name.trim().toLowerCase() === String(name).trim().toLowerCase()
+    );
+
+    if (seedArticle) {
+      return seedArticle;
+    }
+
+    throw error;
+  }
+};
 
 export const createArticle = async (article) =>
   normalizeArticle(await requestJson('/', {
