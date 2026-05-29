@@ -1,10 +1,56 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Button from '../../components/Button';
-import { getArticleByName } from '../../services/articleStore';
+import { fetchArticleByName } from '../../services/articleStore';
 
 function ArticlePage() {
   const { name } = useParams();
-  const article = getArticleByName(name);
+  const [article, setArticle] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pageError, setPageError] = useState('');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadArticle = async () => {
+      try {
+        setIsLoading(true);
+        setPageError('');
+        const articleRow = await fetchArticleByName(name);
+
+        if (isMounted) {
+          setArticle(articleRow);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setPageError(error.message || 'Article not found');
+          setArticle(null);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadArticle();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [name]);
+
+  if (isLoading) {
+    return (
+      <div className="flex w-full flex-col gap-6">
+        <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
+          <div className="mx-auto max-w-3xl">
+            <h1 className="text-3xl font-bold text-[color:var(--pet-ink)]">Loading article...</h1>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   if (!article) {
     return (
@@ -12,6 +58,9 @@ function ArticlePage() {
         <section className="pet-section rounded-3xl px-4 py-6 sm:py-8">
           <div className="mx-auto max-w-3xl">
             <h1 className="text-3xl font-bold text-[color:var(--pet-ink)]">Article not found</h1>
+            {pageError ? (
+              <p className="mt-3 text-sm font-semibold text-red-600">{pageError}</p>
+            ) : null}
             <Button to="/articles" className="mt-6">
               Back to Articles
             </Button>

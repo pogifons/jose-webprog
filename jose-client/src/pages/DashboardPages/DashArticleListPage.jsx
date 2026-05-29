@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import {
   Box,
@@ -20,8 +20,8 @@ import { DataGrid } from '@mui/x-data-grid';
 import { cardSx, dialogActionsSx, dialogContentSx, dialogSx, dialogTitleSx, gridSx } from '../../components/users/userStyles';
 import {
   emptyArticleForm,
+  fetchArticles,
   filterArticles,
-  getStoredArticles,
   saveArticle,
   toggleArticlePublished,
   toArticleForm,
@@ -29,22 +29,57 @@ import {
 } from '../../services/articleStore';
 
 function DashArticleListPage() {
-  const [articles, setArticles] = useState(getStoredArticles);
+  const [articles, setArticles] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedArticleId, setSelectedArticleId] = useState(null);
   const [form, setForm] = useState(emptyArticleForm);
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [pageError, setPageError] = useState('');
+  const [saveError, setSaveError] = useState('');
 
   const filteredArticles = useMemo(
     () => filterArticles(articles, searchTerm),
     [articles, searchTerm]
   );
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadArticles = async () => {
+      try {
+        setIsLoading(true);
+        setPageError('');
+        const articleRows = await fetchArticles();
+
+        if (isMounted) {
+          setArticles(articleRows);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setPageError(error.message || 'Unable to load articles.');
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadArticles();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const openAddDialog = () => {
     setSelectedArticleId(null);
     setForm(emptyArticleForm);
     setErrors({});
+    setSaveError('');
     setIsDialogOpen(true);
   };
 
@@ -52,6 +87,7 @@ function DashArticleListPage() {
     setSelectedArticleId(article.id);
     setForm(toArticleForm(article));
     setErrors({});
+    setSaveError('');
     setIsDialogOpen(true);
   };
 
@@ -59,6 +95,7 @@ function DashArticleListPage() {
     setSelectedArticleId(null);
     setForm(emptyArticleForm);
     setErrors({});
+    setSaveError('');
     setIsDialogOpen(false);
   };
 
@@ -68,9 +105,10 @@ function DashArticleListPage() {
       ...currentForm,
       [name]: type === 'checkbox' ? checked : value,
     }));
+    setSaveError('');
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const nextErrors = validateArticleForm(form);
     setErrors(nextErrors);
 
@@ -78,14 +116,31 @@ function DashArticleListPage() {
       return;
     }
 
-    setArticles((currentArticles) =>
-      saveArticle({
-        articles: currentArticles,
+    try {
+      setIsSaving(true);
+      setPageError('');
+      const nextArticles = await saveArticle({
+        articles,
         form,
         selectedArticleId,
-      })
-    );
-    closeDialog();
+      });
+      setArticles(nextArticles);
+      closeDialog();
+    } catch (error) {
+      setSaveError(error.message || 'Unable to save article.');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleTogglePublished = async (articleId) => {
+    try {
+      setPageError('');
+      const nextArticles = await toggleArticlePublished(articles, articleId);
+      setArticles(nextArticles);
+    } catch (error) {
+      setPageError(error.message || 'Unable to update article status.');
+    }
   };
 
   const columns = [
@@ -127,7 +182,7 @@ function DashArticleListPage() {
             size="small"
             variant="contained"
             color={row.isPublished ? 'warning' : 'success'}
-            onClick={() => setArticles((currentArticles) => toggleArticlePublished(currentArticles, row.id))}
+            onClick={() => handleTogglePublished(row.id)}
           >
             {row.isPublished ? 'Unpublish' : 'Publish'}
           </Button>
@@ -173,8 +228,16 @@ function DashArticleListPage() {
             </Button>
           </Stack>
 
+          {pageError ? (
+            <Typography color="error" sx={{ mb: 2, fontWeight: 700 }}>
+              {pageError}
+            </Typography>
+          ) : null}
+
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Showing {filteredArticles.length} of {articles.length} articles
+            {isLoading
+              ? 'Loading articles...'
+              : `Showing ${filteredArticles.length} of ${articles.length} articles`}
           </Typography>
 
           <Box sx={{ height: 500, width: '100%' }}>
@@ -245,11 +308,16 @@ function DashArticleListPage() {
               }
               label={form.isPublished ? 'Published on ArticleListPage' : 'Save as draft'}
             />
+            {saveError ? (
+              <Typography color="error" sx={{ fontWeight: 700 }}>
+                {saveError}
+              </Typography>
+            ) : null}
           </Stack>
         </DialogContent>
         <DialogActions sx={dialogActionsSx}>
-          <Button onClick={closeDialog}>Cancel</Button>
-          <Button variant="contained" onClick={handleSave}>
+          <Button onClick={closeDialog} disabled={isSaving}>Cancel</Button>
+          <Button variant="contained" onClick={handleSave} disabled={isSaving}>
             {selectedArticleId ? 'Update Article' : 'Save Article'}
           </Button>
         </DialogActions>

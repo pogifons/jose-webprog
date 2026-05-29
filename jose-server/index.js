@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 
 const connectDB = require("./config/db");
+const articleRoutes = require("./routes/articleRoutes");
 const userRoutes = require("./routes/useRoutes");
 
 const app = express();
@@ -57,6 +58,7 @@ app.use((req, res, next) => {
 });
 
 // Routes
+app.use("/api/articles", articleRoutes);
 app.use("/api/users", userRoutes);
 
 // Error Handling

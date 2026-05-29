@@ -1,50 +1,71 @@
-import articlesSeed from '../data/article-content';
-
-const ARTICLES_STORAGE_KEY = 'petpals.articles';
+import constants from '../constants';
 
 const slugify = (value) =>
-  value
+  String(value || '')
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
 
 const normalizeArticle = (article, index = 0) => ({
-  id: article.id ?? index + 1,
+  ...article,
+  id: article.id ?? article._id ?? index + 1,
   name: article.name || slugify(article.title || `article-${index + 1}`),
   title: article.title || 'Untitled Article',
   imageSrc: article.imageSrc || '',
   content: Array.isArray(article.content)
     ? article.content
     : String(article.content || '')
-        .split('\n')
+        .split(/\n{2,}|\r?\n/)
         .map((item) => item.trim())
         .filter(Boolean),
   isPublished: typeof article.isPublished === 'boolean' ? article.isPublished : true,
 });
 
-export const getStoredArticles = () => {
-  try {
-    const storedArticles = JSON.parse(localStorage.getItem(ARTICLES_STORAGE_KEY) || 'null');
-    return Array.isArray(storedArticles)
-      ? storedArticles.map(normalizeArticle)
-      : articlesSeed.map(normalizeArticle);
-  } catch {
-    return articlesSeed.map(normalizeArticle);
+const requestJson = async (path, options = {}) => {
+  const response = await fetch(`${constants.HOST}/articles${path}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+    ...options,
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Article request failed.');
   }
+
+  return data;
 };
 
-export const setStoredArticles = (articles) => {
-  const normalizedArticles = articles.map(normalizeArticle);
-  localStorage.setItem(ARTICLES_STORAGE_KEY, JSON.stringify(normalizedArticles));
-  return normalizedArticles;
+export const fetchArticles = async () => {
+  const articles = await requestJson('/');
+  return articles.map(normalizeArticle);
 };
 
-export const getPublishedArticles = () =>
-  getStoredArticles().filter((article) => article.isPublished);
+export const fetchPublishedArticles = async () => {
+  const articles = await requestJson('/?published=true');
+  return articles.map(normalizeArticle);
+};
 
-export const getArticleByName = (name) =>
-  getPublishedArticles().find((article) => article.name === name);
+export const fetchArticleByName = async (name) =>
+  normalizeArticle(await requestJson(`/slug/${encodeURIComponent(name)}`));
+
+export const createArticle = async (article) =>
+  normalizeArticle(await requestJson('/', {
+    method: 'POST',
+    body: JSON.stringify(article),
+  }));
+
+export const updateArticle = async (id, article) =>
+  normalizeArticle(await requestJson(`/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(article),
+  }));
+
+export const deleteArticle = (id) => requestJson(`/${id}`, { method: 'DELETE' });
 
 export const filterArticles = (articles, searchTerm) => {
   const normalizedSearch = searchTerm.trim().toLowerCase();
@@ -77,46 +98,42 @@ export const emptyArticleForm = {
   isPublished: true,
 };
 
-export const saveArticle = ({ articles, form, selectedArticleId }) => {
-  const article = normalizeArticle({
+export const saveArticle = async ({ articles, form, selectedArticleId }) => {
+  const payload = {
     ...form,
     name: form.name.trim() || slugify(form.title),
+    title: form.title.trim(),
+    imageSrc: form.imageSrc.trim(),
     content: form.content,
-  });
+  };
 
   if (selectedArticleId) {
-    return setStoredArticles(
-      articles.map((currentArticle) =>
-        currentArticle.id === selectedArticleId
-          ? {
-              ...article,
-              id: selectedArticleId,
-            }
-          : currentArticle
-      )
+    const updatedArticle = await updateArticle(selectedArticleId, payload);
+    return articles.map((article) =>
+      article.id === selectedArticleId ? updatedArticle : article
     );
   }
 
-  return setStoredArticles([
-    ...articles,
-    {
-      ...article,
-      id: articles.length > 0 ? Math.max(...articles.map((item) => item.id)) + 1 : 1,
-    },
-  ]);
+  const createdArticle = await createArticle(payload);
+  return [createdArticle, ...articles];
 };
 
-export const toggleArticlePublished = (articles, articleId) =>
-  setStoredArticles(
-    articles.map((article) =>
-      article.id === articleId
-        ? {
-            ...article,
-            isPublished: !article.isPublished,
-          }
-        : article
-    )
+export const toggleArticlePublished = async (articles, articleId) => {
+  const article = articles.find((currentArticle) => currentArticle.id === articleId);
+
+  if (!article) {
+    return articles;
+  }
+
+  const updatedArticle = await updateArticle(articleId, {
+    ...article,
+    isPublished: !article.isPublished,
+  });
+
+  return articles.map((currentArticle) =>
+    currentArticle.id === articleId ? updatedArticle : currentArticle
   );
+};
 
 export const validateArticleForm = (form) => {
   const errors = {};

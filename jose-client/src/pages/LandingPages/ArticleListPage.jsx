@@ -1,9 +1,42 @@
+import { useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import ArticleList from '../../components/ArticleList';
-import { getPublishedArticles } from '../../services/articleStore';
+import { fetchPublishedArticles } from '../../services/articleStore';
 
 const ArticleListPage = () => {
-  const articles = getPublishedArticles();
+  const [articles, setArticles] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [pageError, setPageError] = useState('');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadArticles = async () => {
+      try {
+        setIsLoading(true);
+        setPageError('');
+        const articleRows = await fetchPublishedArticles();
+
+        if (isMounted) {
+          setArticles(articleRows);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setPageError(error.message || 'Unable to load articles.');
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadArticles();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <div className="flex w-full flex-col gap-6">
@@ -27,7 +60,15 @@ const ArticleListPage = () => {
           </h2>
         </div>
 
-        <ArticleList articles={articles} />
+        {pageError ? (
+          <p className="text-sm font-semibold text-red-600">{pageError}</p>
+        ) : isLoading ? (
+          <p className="text-sm text-[color:rgba(27,26,22,0.72)]">Loading articles...</p>
+        ) : articles.length > 0 ? (
+          <ArticleList articles={articles} />
+        ) : (
+          <p className="text-sm text-[color:rgba(27,26,22,0.72)]">No published articles yet.</p>
+        )}
       </section>
     </div>
   );
